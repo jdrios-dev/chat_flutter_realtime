@@ -1,8 +1,11 @@
+import 'package:chat/helpers/show_alert.dart';
+import 'package:chat/services/auth_services.dart';
 import 'package:chat/widgets/btn_blue.dart';
 import 'package:chat/widgets/custom_input.dart';
 import 'package:chat/widgets/labels.dart';
 import 'package:chat/widgets/logo.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -47,6 +50,8 @@ class __FromState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 40),
@@ -74,9 +79,26 @@ class __FromState extends State<_Form> {
           //TODO: BUTTON
           BtnBlue(
             text: 'Register',
-            onPress: () {
-              print(emailCtrl.text);
-              print(passCtrl.text);
+            onPress: authService.isAuthing
+                ? null
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final registerOk = await authService.register(
+                        nameCtrl.text.trim(),
+                        emailCtrl.text.trim(),
+                        passCtrl.text.trim());
+
+                    if (registerOk == true) {
+                      // TODO: connect socket server
+
+                      Navigator.pushReplacementNamed(context, 'users');
+                    } else {
+                      showAlert(
+                        context,
+                        'What Happend!? :( ',
+                        registerOk,
+                      );
+                    }
             },
           ),
         ],

@@ -7,7 +7,7 @@ class BtnBlue extends StatelessWidget {
     required this.onPress,
   }) : super(key: key);
   final String text;
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
 
   @override
   Widget build(BuildContext context) {
