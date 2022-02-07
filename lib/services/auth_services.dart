@@ -69,8 +69,6 @@ class AuthService with ChangeNotifier {
       },
     );
 
-    print(resp.body);
-
     if (resp.statusCode == 200) {
       final registerResponse = loginResponseFromJson(resp.body);
       user = registerResponse.user;
@@ -84,7 +82,6 @@ class AuthService with ChangeNotifier {
 
   Future<bool> isLoggedIn() async {
     final String? token = await _storage.read(key: 'token');
-    print(token);
 
     if (token == null) {
       return false;
