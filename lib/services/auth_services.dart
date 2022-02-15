@@ -20,10 +20,10 @@ class AuthService with ChangeNotifier {
   }
 
   // Getters: static form for token
-  static Future<String?> getToken() async {
+  static Future<String> getToken() async {
     const _storage = FlutterSecureStorage();
     final token = await _storage.read(key: 'token');
-    return token;
+    return token!;
   }
 
   static Future<void> deleteToken() async {

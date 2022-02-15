@@ -1,5 +1,6 @@
 import 'package:chat/helpers/show_alert.dart';
 import 'package:chat/services/auth_services.dart';
+import 'package:chat/services/socket_service.dart';
 import 'package:chat/widgets/btn_blue.dart';
 import 'package:chat/widgets/custom_input.dart';
 import 'package:chat/widgets/labels.dart';
@@ -50,6 +51,7 @@ class __FromState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 40),
@@ -68,7 +70,6 @@ class __FromState extends State<_Form> {
             textController: passCtrl,
             isPassword: true,
           ),
-          //TODO: BUTTON
           BtnBlue(
             text: 'Login',
             onPress: authService.isAuthing
@@ -79,8 +80,7 @@ class __FromState extends State<_Form> {
                         emailCtrl.text.trim(), passCtrl.text.trim());
 
                     if (loginOk) {
-                      // TODO: connect socket server
-
+                      socketService.connect();
                       Navigator.pushReplacementNamed(context, 'users');
                     } else {
                       showAlert(context, 'What Happend!? :( ',
